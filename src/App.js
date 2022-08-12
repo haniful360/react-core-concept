@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App(){
@@ -11,6 +11,7 @@ function App(){
   return(
     <div className='App'>
       <Counter></Counter>
+      <ExternalUser></ExternalUser>
       {/* {
         products.map(product => <Product name={product.name} price={product.price} color={product.color}></Product>)
       } */}
@@ -46,6 +47,36 @@ function Counter () {
       <h2>Count:{count}</h2>
       <button onClick={increaseCount}>increase:</button>
       <button onClick={decreaseCount}>decrease:</button>
+    </div>
+  )
+}
+
+
+function ExternalUser(){
+  const [users, setUsers] = useState([]);
+  useEffect(()=>{
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res => res.json())
+    .then(data => setUsers(data))
+  },[])
+  
+  return(
+    
+  <div>
+    <h2>External Users:{users.length}</h2>
+    {/* <h2>External Users:{users.name}</h2> */}
+    {
+        users.map( user => <User name={user.name} email={user.email}></User>)
+    }
+  </div>
+  )
+}
+
+function User(props){
+  return(
+    <div>
+      <h2>{props.name}</h2>
+      <p>{props.email}</p>
     </div>
   )
 }
